@@ -6,6 +6,10 @@ const routes: Routes = [
     path: 'auth', 
     loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule) 
   },
+  { 
+    path: 'inventario', 
+    loadChildren: () => import('./features/inventario/inventario-module').then(m => m.InventarioModule) 
+  },
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth' }
 ];

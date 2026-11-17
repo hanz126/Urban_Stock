@@ -1,0 +1,49 @@
+<div class="inventario-container">
+  <div class="header-section">
+    <h2>Inventario de UrbanStock</h2>
+    <button class="btn-nuevo">+ Nuevo Producto</button>
+  </div>
+
+  <div *ngIf="loading" class="mensaje-estado">
+    Cargando productos desde el servidor...
+  </div>
+
+  <div *ngIf="errorMessage" class="alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage" class="tabla-wrapper">
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of productos">
+          <td>{{ p.idProducto }}</td>
+          <td><strong>{{ p.nombre }}</strong></td>
+          <td>{{ p.descripcion }}</td>
+          <td>${{ p.precio | number }}</td>
+          <td>
+            <span [class.stock-bajo]="p.stock < 5" class="badge-stock">
+              {{ p.stock }} un.
+            </span>
+          </td>
+          <td>
+            <button class="btn-accion editar">Editar</button>
+            <button class="btn-accion eliminar">Eliminar</button>
+          </td>
+        </tr>
+        <tr *ngIf="productos.length === 0">
+          <td colspan="6" class="sin-datos">No hay productos registrados en la base de datos.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
