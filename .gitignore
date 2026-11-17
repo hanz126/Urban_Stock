@@ -1,44 +1,22 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+﻿# === Frontend (Angular) ===
+Front/node_modules/
+Front/.angular/
+Front/dist/
+Front/.vscode/
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# === Backend (.NET / Visual Studio) ===
+Back/**/bin/
+Back/**/obj/
+Back/**/.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# === Base de datos (opcional, decide tú) ===
+ BD/*.sql
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/mcp.json
-.history/*
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-__screenshots__/
-
-# System files
+# === Generales ===
+*.log
 .DS_Store
 Thumbs.db
