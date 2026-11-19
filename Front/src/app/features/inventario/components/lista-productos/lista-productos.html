@@ -1,7 +1,7 @@
 <div class="inventario-container">
   <div class="header-section">
     <h2>Inventario de UrbanStock</h2>
-    <button class="btn-nuevo">+ Nuevo Producto</button>
+    <button class="btn-nuevo" (click)="abrirModalCrear()">+ Nuevo Producto</button>
   </div>
 
   <div *ngIf="loading" class="mensaje-estado">
@@ -18,32 +18,91 @@
         <tr>
           <th>ID</th>
           <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Precio</th>
+          <th>Talla</th>
+          <th>Costo</th>
+          <th>Precio Venta</th>
           <th>Stock</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let p of productos">
-          <td>{{ p.idProducto }}</td>
+          <td>{{ p.iD_Producto }}</td>
           <td><strong>{{ p.nombre }}</strong></td>
-          <td>{{ p.descripcion }}</td>
-          <td>${{ p.precio | number }}</td>
+          <td>{{ p.talla }}</td>
+          <td>${{ p.precioCosto | number }}</td>
+          <td>${{ p.precioVenta | number }}</td>
           <td>
-            <span [class.stock-bajo]="p.stock < 5" class="badge-stock">
+            <span [class.stock-bajo]="p.stock <= p.stockMinimo" class="badge-stock">
               {{ p.stock }} un.
             </span>
           </td>
           <td>
-            <button class="btn-accion editar">Editar</button>
-            <button class="btn-accion eliminar">Eliminar</button>
+            <button class="btn-accion editar" (click)="abrirModalEditar(p)">Editar</button>
+            <button class="btn-accion eliminar" (click)="eliminarProducto(p.iD_Producto)">Eliminar</button>
           </td>
         </tr>
         <tr *ngIf="productos.length === 0">
-          <td colspan="6" class="sin-datos">No hay productos registrados en la base de datos.</td>
+          <td colspan="7" class="sin-datos">No hay productos registrados en la base de datos.</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- MODAL CREAR / EDITAR -->
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <h3>{{ isEditMode ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+
+      <form [formGroup]="productoForm" (ngSubmit)="guardarProducto()">
+        
+        <div class="form-group">
+          <label>Categoría</label>
+          <select formControlName="iD_Categoria">
+            <option value="" disabled>Seleccione una categoría</option>
+            <option *ngFor="let cat of categorias" [value]="cat.iD_Categoria">{{ cat.nombreCategoria }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Producto</label>
+          <input type="text" formControlName="nombre" placeholder="Ej. Camiseta Oversize Rebel">
+        </div>
+
+        <div class="form-group">
+          <label>Talla</label>
+          <input type="text" formControlName="talla" placeholder="Ej. L, XL, M">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio Costo ($)</label>
+            <input type="number" formControlName="precioCosto">
+          </div>
+          <div class="form-group">
+            <label>Precio Venta ($)</label>
+            <input type="number" formControlName="precioVenta">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stock Inicial</label>
+            <input type="number" formControlName="stock">
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo (Alerta)</label>
+            <input type="number" formControlName="stockMinimo">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn-guardar">{{ isEditMode ? 'Actualizar' : 'Guardar' }}</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
 </div>

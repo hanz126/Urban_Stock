@@ -1,0 +1,166 @@
+<div class="pos-container">
+  <div class="pos-catalogo">
+    <div class="pos-header">
+      <h2>Punto de Venta (POS)</h2>
+      <input
+        type="text"
+        class="buscador-input"
+        placeholder="Buscar por nombre o talla..."
+        (input)="onBuscar($event)"
+      />
+    </div>
+
+    <div class="categorias-barra">
+      <button
+        type="button"
+        class="cat-btn"
+        [class.activa]="categoriaSeleccionada === 0"
+        (click)="seleccionarCategoria(0)"
+      >
+        Todas
+      </button>
+      <button
+        *ngFor="let cat of categorias"
+        type="button"
+        class="cat-btn"
+        [class.activa]="categoriaSeleccionada === (cat.iD_Categoria || 0)"
+        (click)="seleccionarCategoria(cat.iD_Categoria || 0)"
+      >
+        {{ cat.nombreCategoria }}
+      </button>
+    </div>
+
+    <div *ngIf="loadingProductos" class="estado-msg">Cargando prendas...</div>
+    <div *ngIf="mensajeError" class="error-msg">{{ mensajeError }}</div>
+
+    <div *ngIf="!loadingProductos && !mensajeError" class="grid-productos">
+      <div *ngFor="let p of productosFiltrados" class="card-producto">
+        <div class="card-top">
+          <span class="talla-badge">Talla {{ p.talla }}</span>
+          <span class="stock-tag" [class.agotado]="p.stock <= 0">
+            {{ p.stock > 0 ? p.stock + ' disp.' : 'Agotado' }}
+          </span>
+        </div>
+        <h4>{{ p.nombre }}</h4>
+        <p class="precio-txt">${{ getPrecioUnitario(p) | number }}</p>
+        <button
+          type="button"
+          class="btn-agregar"
+          [disabled]="p.stock <= 0"
+          (click)="agregarAlCarrito(p)"
+        >
+          + Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="pos-carrito">
+    <h3>Carrito de Venta ({{ totalPrendas }})</h3>
+
+    <div class="cliente-box">
+      <label>Cliente</label>
+      <div class="cliente-row">
+        <select [(ngModel)]="clienteSeleccionadoId">
+          <option [ngValue]="null">Cliente Ocasional / Mostrador</option>
+          <option *ngFor="let c of clientes" [ngValue]="c.iD_Cliente || c.id_Cliente || c.idCliente">
+            {{ c.nombreCompleto }} - {{ c.documento }}
+          </option>
+        </select>
+        <button type="button" class="btn-mini" (click)="abrirModalCliente()">+ Nuevo</button>
+      </div>
+    </div>
+
+    <div class="lista-items" *ngIf="carrito.length > 0; else carritoVacio">
+      <div *ngFor="let item of carrito" class="item-carrito">
+        <div>
+          <strong>{{ item.producto.nombre }}</strong>
+          <small class="item-meta">Talla {{ item.producto.talla }} · ${{ getPrecioUnitario(item.producto) | number }}</small>
+        </div>
+        <div class="item-controles">
+          <button type="button" (click)="decrementarCantidad(item)">-</button>
+          <span>{{ item.cantidad }}</span>
+          <button type="button" (click)="incrementarCantidad(item)">+</button>
+          <strong class="item-sub">${{ item.subtotal | number }}</strong>
+          <button type="button" class="btn-quitar" (click)="eliminarDelCarrito(item)">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #carritoVacio>
+      <p class="carrito-vacio">No hay prendas agregadas al carrito.</p>
+    </ng-template>
+
+    <div class="resumen-venta">
+      <div class="total-fila">
+        <span>Total a pagar:</span>
+        <strong>${{ totalVenta | number }}</strong>
+      </div>
+      <div class="acciones-venta">
+        <button type="button" class="btn-vaciar" (click)="vaciarCarrito()" [disabled]="carrito.length === 0">
+          Vaciar
+        </button>
+        <button
+          type="button"
+          class="btn-confirmar"
+          (click)="confirmarVenta()"
+          [disabled]="carrito.length === 0 || procesandoVenta"
+        >
+          {{ procesandoVenta ? 'Procesando...' : 'Finalizar Venta' }}
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div class="modal-backdrop" *ngIf="mostrarModalCliente">
+  <div class="modal-box">
+    <h3>Registrar Cliente</h3>
+    <form [formGroup]="clienteForm" (ngSubmit)="guardarNuevoCliente()">
+      <div class="campo">
+        <label>Documento</label>
+        <input type="text" formControlName="documento" />
+      </div>
+      <div class="campo">
+        <label>Nombre Completo</label>
+        <input type="text" formControlName="nombreCompleto" />
+      </div>
+      <div class="campo">
+        <label>Teléfono</label>
+        <input type="text" formControlName="telefono" />
+      </div>
+      <div class="campo">
+        <label>Correo</label>
+        <input type="email" formControlName="correo" />
+      </div>
+      <p *ngIf="errorClienteModal" class="error-msg">{{ errorClienteModal }}</p>
+      <div class="modal-btns">
+        <button type="button" (click)="cerrarModalCliente()">Cancelar</button>
+        <button type="submit" [disabled]="guardandoCliente">
+          {{ guardandoCliente ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL RECIBO -->
+<div class="modal-backdrop" *ngIf="mostrarModalRecibo && reciboActual">
+  <div class="modal-box">
+    <h3>Venta #{{ reciboActual.idVenta }} Registrada</h3>
+    <p><strong>Cliente:</strong> {{ reciboActual.cliente }}</p>
+    <p><strong>Vendedor:</strong> {{ reciboActual.vendedor }}</p>
+    <hr />
+    <div *ngFor="let item of reciboActual.items" class="recibo-linea">
+      <span>{{ item.cantidad }}x {{ item.producto.nombre }} ({{ item.producto.talla }})</span>
+      <strong>${{ item.subtotal | number }}</strong>
+    </div>
+    <hr />
+    <p class="recibo-total"><strong>Total: ${{ reciboActual.total | number }}</strong></p>
+    <div class="modal-btns">
+      <button type="button" (click)="imprimirRecibo()">Imprimir</button>
+      <button type="button" (click)="cerrarRecibo()">Cerrar</button>
+    </div>
+  </div>
+</div>

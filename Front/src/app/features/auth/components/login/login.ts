@@ -39,6 +39,7 @@ export class Login {
         next: (response) => {
           this.loading = false;
           localStorage.setItem('token', response.token);
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
           this.router.navigate(['/inventario']);
         },
         error: (err) => {

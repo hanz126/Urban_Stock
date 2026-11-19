@@ -28,6 +28,27 @@ namespace UrbanStockApi.Controllers
             return item == null ? NotFound() : Ok(item);
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var usuario = await _queries.BuscarxCorreo(request.Correo);
+
+            if (usuario == null || !usuario.Estado || usuario.ContrasenaHash != request.Contrasena)
+                return Unauthorized(new { message = "Correo o contraseña incorrectos, o usuario inactivo." });
+
+            return Ok(new
+            {
+                token = $"urbanstock-token-{usuario.ID_Usuario}-{Guid.NewGuid()}",
+                usuario = new
+                {
+                    usuario.ID_Usuario,
+                    usuario.Nombre,
+                    usuario.Correo,
+                    usuario.Rol
+                }
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Usuario usuario)
         {
@@ -48,5 +69,11 @@ namespace UrbanStockApi.Controllers
             var eliminado = await _repo.Delete(id);
             return eliminado == null ? NotFound() : Ok(eliminado);
         }
+    }
+
+    public class LoginRequest
+    {
+        public string Correo { get; set; } = string.Empty;
+        public string Contrasena { get; set; } = string.Empty;
     }
 }

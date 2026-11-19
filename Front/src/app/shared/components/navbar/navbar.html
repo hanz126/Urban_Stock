@@ -1,0 +1,33 @@
+<header class="urban-navbar">
+  <div class="nav-brand">
+    <div class="brand-badge">⚡</div>
+    <div class="brand-text">
+      <span class="brand-title">URBAN<strong>STOCK</strong></span>
+      <span class="brand-sub">STREETWEAR POS & INVENTORY</span>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/pos" routerLinkActive="active-link" class="nav-item">
+      <span class="nav-icon">🛒</span>
+      <span>Punto de Venta (POS)</span>
+    </a>
+    <a routerLink="/inventario" routerLinkActive="active-link" class="nav-item">
+      <span class="nav-icon">📦</span>
+      <span>Inventario & Alertas</span>
+    </a>
+  </nav>
+
+  <div class="nav-user-panel">
+    <div class="user-info">
+      <span class="user-name">{{ usuario?.nombre || 'Usuario' }}</span>
+      <span class="user-role" [class.admin-badge]="rol === 'Admin'" [class.vendedor-badge]="rol === 'Vendedor'">
+        {{ rol || 'Operador' }}
+      </span>
+    </div>
+    <button (click)="logout()" class="btn-logout" title="Cerrar sesión">
+      <span class="logout-icon">🚪</span>
+      <span class="logout-text">Salir</span>
+    </button>
+  </div>
+</header>

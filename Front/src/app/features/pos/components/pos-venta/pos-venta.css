@@ -1,0 +1,274 @@
+.pos-container {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--color-bg-light, #F9F6F0);
+  min-height: calc(100vh - 64px);
+}
+
+.pos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.buscador-input {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #b8b09d;
+  border-radius: 6px;
+  min-width: 240px;
+}
+
+.categorias-barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.cat-btn {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #3A4F41;
+  background: #fff;
+  color: #3A4F41;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cat-btn.activa {
+  background: #3A4F41;
+  color: #fff;
+}
+
+.grid-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.card-producto {
+  background: #fff;
+  border: 1px solid rgba(58, 79, 65, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.talla-badge {
+  background: #E8DFCA;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.stock-tag {
+  color: #155724;
+  font-weight: 600;
+}
+
+.stock-tag.agotado {
+  color: #c25935;
+}
+
+.precio-txt {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3A4F41;
+  margin: 0.5rem 0;
+}
+
+.btn-agregar {
+  width: 100%;
+  padding: 0.55rem;
+  border: none;
+  border-radius: 6px;
+  background: #C25935;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-agregar:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.pos-carrito {
+  background: #E8DFCA;
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(58, 79, 65, 0.25);
+}
+
+.cliente-box {
+  margin-bottom: 1rem;
+}
+
+.cliente-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.cliente-row select {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #b8b09d;
+}
+
+.btn-mini {
+  padding: 0.5rem 0.75rem;
+  background: #3A4F41;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.lista-items {
+  flex: 1;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.item-carrito {
+  background: #F9F6F0;
+  padding: 0.7rem;
+  border-radius: 6px;
+  margin-bottom: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.item-meta {
+  display: block;
+  color: #555;
+}
+
+.item-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.item-controles button {
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}
+
+.btn-quitar {
+  background: #c25935;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.total-fila {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  margin-bottom: 0.9rem;
+}
+
+.acciones-venta {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-vaciar {
+  padding: 0.75rem 1rem;
+  border: 1px solid #3A4F41;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-confirmar {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: #3A4F41;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #F9F6F0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 420px;
+  max-width: 92%;
+}
+
+.campo {
+  margin-bottom: 0.85rem;
+}
+
+.campo label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.campo input {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #b8b09d;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.modal-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.recibo-linea, .recibo-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem 0;
+}
+
+.error-msg, .carrito-vacio, .estado-msg {
+  padding: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .pos-container {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,13 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { 
-    path: 'auth', 
-    loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule) 
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule)
   },
-  { 
-    path: 'inventario', 
-    loadChildren: () => import('./features/inventario/inventario-module').then(m => m.InventarioModule) 
+  {
+    path: 'inventario',
+    loadChildren: () => import('./features/inventario/inventario-module').then(m => m.InventarioModule)
+  },
+  {
+    path: 'pos',
+    loadChildren: () => import('./features/pos/pos-module').then(m => m.PosModule)
   },
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth' }

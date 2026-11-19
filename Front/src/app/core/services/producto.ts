@@ -3,20 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Producto {
+  iD_Producto?: number;
+  id_Producto?: number;
   idProducto?: number;
+  iD_Categoria: number;
+  id_Categoria?: number;
+  nombreCategoria?: string;
   nombre: string;
-  descripcion: string;
-  precio: number;
+  talla: string;
+  precioCosto: number;
+  precioVenta: number;
+  precio?: number;
   stock: number;
-  categoria: string;
+  stockMinimo: number;
+  alertaStockBajo?: boolean;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
-  // Cambia esta URL por la ruta de tu API de .NET (ej. /api/productos)
-  private apiUrl = 'https://localhost:5001/api/productos';
+  private apiUrl = 'http://localhost:5190/api/Productos';
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +31,19 @@ export class ProductoService {
     return this.http.get<Producto[]>(this.apiUrl);
   }
 
+  obtenerStockBajo(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.apiUrl}/stock-bajo`);
+  }
+
   crearProducto(producto: Producto): Observable<Producto> {
     return this.http.post<Producto>(this.apiUrl, producto);
+  }
+
+  actualizarProducto(id: number, producto: Producto): Observable<Producto> {
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto);
+  }
+
+  eliminarProducto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
